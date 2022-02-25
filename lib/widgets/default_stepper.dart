@@ -21,7 +21,7 @@ class DefaultStepper extends StatefulWidget {
     this.height = 50,
     this.minValue = 0,
     this.maxValue = 10,
-    this.initialValue = 0,
+    this.initialValue = 1,
     this.enabledButtonColor = Colors.cyan,
     this.disabledButtonColor = Colors.black12,
     this.borderColor = Colors.black12,

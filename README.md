@@ -8,3 +8,8 @@
 
 3. default_stepper
 - widget with plus and minus buttons + value
+
+4. default_checkbox_option
+- self-explanatory
+
+
