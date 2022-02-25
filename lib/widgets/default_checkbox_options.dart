@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
 class CheckboxOption {
-  final int id;
   final String title;
   final ValueNotifier<bool> isSelectedNotifier;
 
   CheckboxOption({
-    required this.id,
     required this.title,
     required this.isSelectedNotifier,
   });

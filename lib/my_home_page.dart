@@ -1,5 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_widgets/widgets/default_checkbox_options.dart';
+import 'package:flutter_widgets/widgets/default_radio_options.dart';
 
 class Question {
   final int id;
@@ -24,10 +26,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   List<Question> questionList = [
-    Question(id: 1, title: "question 1",),
-    Question(id: 2, title: "question 2", isSelected: true),
+    Question(id: 1, title: "question question question question question question question question question question question question question question question 1",),
+    Question(id: 2, title: "question 2"),
     Question(id: 3, title: "question 3",),
-    Question(id: 4, title: "question 4", isSelected: true),
+    Question(id: 4, title: "question 4"),
     Question(id: 5, title: "question 5",),
   ];
 
@@ -41,16 +43,18 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(),
       body: Center(
-        child: DefaultCheckboxOptions(
-          optionList: questionList.map((question) => CheckboxOption(
-            id: question.id,
-            title: question.title,
-            isSelectedNotifier: ValueNotifier(question.isSelected),
-          )).toList(),
-          onTapCheckbox: (index, newValue) {
-            questionList[index].isSelected = newValue;
-            for (var question in questionList) {
-              print("${question.title} ${question.isSelected}");
+        child: DefaultRadioOptions(
+          optionList: questionList.map((question) {
+            Random r = new Random();
+            double falseProbability = .5;
+            bool booleanResult = r.nextDouble() > falseProbability;
+
+            return RadioOption(title: question.title, isSelectable: booleanResult);
+          }).toList(),
+          onTapOption: (index) {
+            for (int i = 0; i < questionList.length; i++) {
+              questionList[i].isSelected = (index == i) ? true : false;
+              print("${questionList[i].title} ${questionList[i].isSelected}");
             }
           },
         )
