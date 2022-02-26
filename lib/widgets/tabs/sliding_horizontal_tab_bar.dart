@@ -39,22 +39,25 @@ class SlidingHorizontalTabBar extends StatefulWidget {
   _SlidingHorizontalTabBarState createState() => _SlidingHorizontalTabBarState();
 }
 
-class _SlidingHorizontalTabBarState extends State<SlidingHorizontalTabBar> {
+class _SlidingHorizontalTabBarState extends State<SlidingHorizontalTabBar>
+  with WidgetsBindingObserver {
 
 //============================================================
 // ** Properties **
 //============================================================
 
+  final GlobalKey _tabBarGlobalKey = GlobalKey();
   final ValueNotifier<int> _currentIndexNotifier = ValueNotifier(0);
 
 //============================================================
 // ** Flutter Life Cycle **
 //============================================================
 
+
   @override
   void didUpdateWidget(covariant SlidingHorizontalTabBar oldWidget) {
     super.didUpdateWidget(oldWidget);
-    setState(() {});
+    _rebuildView();
   }
 
   @override
@@ -62,13 +65,20 @@ class _SlidingHorizontalTabBarState extends State<SlidingHorizontalTabBar> {
     super.initState();
 
     _currentIndexNotifier.value = widget.initialIndex;
+    WidgetsBinding.instance?.addObserver(this);
+    _rebuildView();
   }
 
   @override
   void dispose() {
     super.dispose();
-
+    WidgetsBinding.instance?.removeObserver(this);
     _currentIndexNotifier.dispose();
+  }
+
+  @override 
+  void didChangeMetrics() {
+    _rebuildView();
   }
   
   @override
@@ -76,6 +86,7 @@ class _SlidingHorizontalTabBarState extends State<SlidingHorizontalTabBar> {
     return Padding(
       padding: widget.margin,
       child: Container(
+        key: _tabBarGlobalKey,
         height: widget.height,
         width: double.infinity,
         decoration: BoxDecoration(
@@ -164,6 +175,10 @@ class _SlidingHorizontalTabBarState extends State<SlidingHorizontalTabBar> {
 // ** Helper Functions **
 //============================================================
 
+  void _rebuildView() {
+    WidgetsBinding.instance?.addPostFrameCallback((_) => setState(() {}));
+  }
+
   double _getSelectedTabLeftPosition() { 
     if (_currentIndexNotifier.value == 0) {
       return widget.tabPadding.left;
@@ -176,8 +191,10 @@ class _SlidingHorizontalTabBarState extends State<SlidingHorizontalTabBar> {
   }
 
   double _getTotalWidgetWidth() {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final width = screenWidth - widget.margin.left * 2;
+    final widgetRenderBox = _tabBarGlobalKey.currentContext?.findRenderObject() as RenderBox?;
+    final widgetSize = widgetRenderBox?.size;
+    if (widgetSize == null) return 0.0;
+    final width = widgetSize.width;
     return width;
   }
 

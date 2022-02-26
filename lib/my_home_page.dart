@@ -17,15 +17,17 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(),
       body: Column(
         children: [
-          SlidingHorizontalTabBar(
-            borderRadius: 10.0,
-            margin: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
-            tabs: [
-              Text("tab 1"),
-              Text("tab 2"),
-              Text("tab 3"),
-            ],
-            onTap: (currentIndex) => print(currentIndex),
+          Container(
+            child: SlidingHorizontalTabBar(
+              borderRadius: 10.0,
+              margin: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
+              tabs: [
+                Text("tab 1"),
+                Text("tab 2"),
+                Text("tab 3"),
+              ],
+              onTap: (currentIndex) => print(currentIndex),
+            ),
           ),
 
           Expanded(
